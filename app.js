@@ -83,14 +83,51 @@ function setupGame() {
     }
 }
 
+let runningTotal = 0;
+
 function rollRound() {
 
+    let die1 = Math.ceil(Math.random() * 6);
+    alert(`${currentRound.player.name} rolls a ${die1}...`);
+    let die2 = Math.ceil(Math.random() * 6);
+    alert(`... and a ... ${die2}`);
+    let rollTotal = die1 + die2;
+    if (die1 + die2 === 7) {
+        runningTotal = 0;
+        alert(`Oh no! ${currentRound.player.name} has rolled a total of 7, they score nothing this round!`);
+        // tidy up work, pass the round to the next player
+    } else {
+        runningTotal += rollTotal;
+        alert(`${currentRound.player.name} has rolled a total of ${rollTotal}`);
+        alert(`${currentRound.player.name} has a total score this round of ${runningTotal}`);
+        alert(`${currentRound.player.name}, do you want to continue to roll? Remember, if you roll a 7 your score will become zero!`);
+
+        if (getContinueInput() === "Y") {
+            die1 = 0;
+            die2 = 0;
+            alert(`OK ${currentRound.player.name}, roll the dice again...`)
+            rollRound();
+        } else {
+            alert(`OK ${currentRound.player.name}, you scored ${runningTotal}.`)
+        }
+    }
+
+    function getContinueInput() {
+        let continueInput = "";
+        while (continueInput != "Y" || continueInput != "N") {
+            let input = prompt("Type Y to continue rolling; Type N to stop rolling.");
+            continueInput = input.toUpperCase();
+            return continueInput;
+        }
+
+    }
 }
+
 
 
 
 setupGame();
 
-while (p1.totalScore < gameState.playTo || p2.totalScore < gameState.playTo) {
-    rollRound();
-}
+// while (p1.totalScore < gameState.playTo || p2.totalScore < gameState.playTo) {
+//     rollRound();
+// }
